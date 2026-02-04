@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="logo-w.png">
+  <title>Veo Plus</title>
+  
+  <header class="topBar">
+  <div class="logoBox">
+   <img
+  src="logo.png"
+  alt="Logo"
+  class="logoOnly"
+  draggable="false"
+/>
+  </div>
+</header>
+
+<style>.logoOnly{
+  position:fixed;
+  top:16px;
+  left:16px;
+
+  width: 110px;   /* ثابت */
+  height: 110px; /* ثابت */
+
+  object-fit:contain;
+  z-index:9999;
+
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-user-drag:none;
+  -webkit-touch-callout:none;
+}
+
+
+
+/* جوال */
+@media (max-width:600px){
+  .logoOnly{
+    width:82px;
+    height:82px;
+    top:12px;
+    left:12px;
+  }
+}
+
+</style>
+  <style>/* يمنع اختفاء العناصر */
+html, body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+/* كل العناصر */
+*{
+  box-sizing:border-box;
+}
+
+/* الحاوية الأساسية */
+.container,
+.card{
+  width:100%;
+  max-width:100%;
+}
+
+/* يمنع العناصر تطلع برا الشاشة */
+img, video, iframe{
+  max-width:100%;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap:14px;
+}
+
+/* جوال */
+@media (max-width:600px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+button,
+.btn,
+.btnLink{
+  max-width:100%;
+  word-wrap:break-word;
+}
+
+/* أحجام نص مرنة */
+h1{font-size:clamp(18px,5vw,26px)}
+h2{font-size:clamp(15px,4vw,20px)}
+p {font-size:clamp(13px,3.5vw,15px)}
+.videoBox{
+  width:100%;
+  aspect-ratio:16 / 9;
+  background:#000;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.videoBox iframe,
+.videoBox video{
+  width:100%;
+  height:100%;
+}
+
+
+
+</style>
+  <style>
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+    body{margin:0}
+    .bg{min-height:100vh;display:grid;place-items:center;background:radial-gradient(1200px 600px at 50% -10%,#2b2b2b,#0f0f10);padding:24px}
+    .card{width:min(760px,100%);background:#141416;border:1px solid #2a2a2e;border-radius:18px;padding:18px;color:#fff;box-shadow:0 18px 60px rgba(0,0,0,.45)}
+    h1{margin:0 0 14px;font-size:22px}
+    h2{margin:18px 0 10px;font-size:18px}
+    label{display:block;margin:10px 0 6px;color:#cfcfd6;font-size:13px}
+    input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #2c2c33;background:#0f0f12;color:#fff;outline:none}
+    input:focus,select:focus{border-color:#4a4a56}
+    .tabs{display:flex;gap:10px;background:#0f0f12;border:1px solid #2c2c33;border-radius:14px;padding:6px;margin-bottom:12px;flex-wrap:wrap}
+    .tab{flex:1;min-width:140px;padding:10px 12px;border:0;border-radius:12px;background:transparent;color:#cfcfd6;cursor:pointer}
+    .tab.active{background:#1d1d22;color:#fff;border:1px solid #2c2c33}
+    .panel{display:none;margin-top:10px}
+    .panel.show{display:block}
+    .btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px solid #2c2c33;background:#ffffff;color:#0f0f12;font-weight:700;cursor:pointer}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn.ghost{background:transparent;color:#fff}
+    .hint{margin-top:10px;color:#b6b6c2;font-size:13px;line-height:1.6}
+    .link{background:none;border:0;color:#9ad;cursor:pointer;padding:0}
+    .msg{padding:10px 12px;border-radius:12px;margin:10px 0;border:1px solid #2c2c33}
+    .msg.ok{background:#102214;color:#b9f6c2}
+    .msg.bad{background:#2a1212;color:#ffbaba}
+    .verify{margin-top:12px;padding:12px;border-radius:12px;border:1px solid #2c2c33;background:#0f0f12}
+    .sep{height:1px;background:#2c2c33;margin:14px 0}
+    .muted{color:#b6b6c2;font-size:13px}
+    .hide{display:none !important}
+    .grid{display:grid;gap:12px}
+    @media (min-width: 820px){ .grid{grid-template-columns: 1fr 1fr} }
+    .box{border:1px solid #2c2c33;background:#0f0f12;border-radius:14px;padding:12px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid #2c2c33;background:#0f0f12;color:#cfcfd6;font-size:12px}
+    .videoPlaceholder{height:140px;border-radius:12px;border:1px dashed #3a3a44;display:grid;place-items:center;color:#9aa; font-size:13px}
+  </style>
+
+  <style>
+.btnLink{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  padding:12px 16px;
+  border-radius:14px;
+
+  background:#4a4a4a73;
+  color:#86db8c;
+  border:1px solid #2c2c33;
+
+  font-weight:800;
+  text-decoration:none;
+  cursor:pointer;
+
+  transition:transform .12s ease, opacity .12s ease, background .12s ease, border-color .12s ease;
+  user-select:none;
+
+  margin-right: 570px;
+}
+
+/* Hover */
+.btnLink:hover{
+  transform:translateY(-1px);
+  opacity:.95;
+  border-color:#4a4a56;
+}
+
+/* Active (وقت الضغط) */
+.btnLink:active{
+  transform:translateY(0px) scale(.99);
+  opacity:.92;
+}
+
+/* Focus (لو تنقل بالكيبورد) */
+.btnLink:focus-visible{
+  outline:3px solid rgba(255,255,255,.25);
+  outline-offset:3px;
+}
+
+/* Disabled style: استخدمه لو خليته زر button بدل a */
+.btnLink.isDisabled{
+  pointer-events:none;
+  opacity:.45;
+  filter:saturate(.6);
+}
+
+/* ايقونة */
+.btnIcon{
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:8px;
+  background:rgba(0,0,0,.08);
+  font-size:14px;
+}
+
+
+  </style>
+
+  
+
+</head>
+
+<body class="bg">
+  <!-- AUTH VIEW -->
+  <main id="authView" class="card">
+    <h1>الحساب</h1>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="login">تسجيل الدخول</button>
+      <button class="tab" data-tab="signup">إنشاء حساب</button>
+      <button class="tab" data-tab="code" id="codeTabBtn" disabled>أدخل الرمز</button>
+    </div>
+
+    <div id="msg" class="msg" hidden></div>
+
+    <!-- LOGIN -->
+    <section id="login" class="panel show">
+      <label>البريد الإلكتروني</label>
+      <input id="loginEmail" type="email" placeholder="name@email.com" autocomplete="email"/>
+
+      <label>كلمة المرور</label>
+      <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+
+      <button id="btnLogin" class="btn">دخول</button>
+
+      <div class="hint">
+        <button id="btnForgot" class="link">نسيت كلمة المرور؟</button>
+      </div>
+
+      <div id="verifyBox" class="verify" hidden>
+        <p style="margin:0 0 10px">حسابك غير مُتحقق. تحقق من بريدك ثم سجّل دخول.</p>
+        <button id="btnResend" class="btn ghost">إعادة إرسال رابط التحقق</button>
+      </div>
+
+      <div id="needCodeBox" class="verify" hidden>
+        <p style="margin:0 0 10px">دخلت ✅ الآن لازم تكتب رمز الوصول.</p>
+        <button id="goCode" class="btn ghost">اذهب لتاب الرمز</button>
+      </div>
+    </section>
+
+    <!-- SIGNUP -->
+    <section id="signup" class="panel">
+      <label>اسم المستخدم</label>
+      <input id="suName" type="text" placeholder="مثال: 3Z" autocomplete="nickname"/>
+
+      <label>البريد الإلكتروني</label>
+      <input id="suEmail" type="email" placeholder="name@email.com" autocomplete="email"/>
+
+      <label>كلمة المرور</label>
+      <input id="suPass" type="password" placeholder="••••••••" autocomplete="new-password"/>
+
+      <button id="btnSignup" class="btn">إنشاء حساب</button>
+
+      <div class="hint">
+        بعد الإنشاء بنرسل لك <b>رابط تحقق</b> على الإيميل.
+        <br/>بعد ما تتحقق ارجع وسجّل دخول.
+      </div>
+    </section>
+
+    <!-- CODE -->
+    <section id="code" class="panel">
+      <h2>أدخل رمز الوصول</h2>
+      <div class="muted">لن تدخل الواجهة الأساسية إلا بعد إدخال رمز صحيح.</div>
+
+      <label>الرمز</label>
+      <input id="accessCode" type="text" placeholder="يتكون من 24 خانة" />
+
+      <button id="btnCheckCode" class="btn">تأكيد الرمز</button>
+
+      <div class="hint">
+        إذا الرمز مستخدم سابقًا أو غلط → ما راح يفتح .
+      </div>
+
+      <a class="btnLink" href="https://discord.gg/p4jj8VHTdh" target="_blank" rel="noopener noreferrer">
+  <span class="btnIcon">↗</span>
+  <span>شراء رمز</span>
+</a>
+
+    </section>
+  </main>
+
+  <!-- MAIN VIEW (Protected) -->
+  <main id="mainView" class="card hide">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div>
+        <h1 style="margin-bottom:6px">الواجهة الأساسية</h1>
+        <div id="who" class="muted"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span id="verifiedPill" class="pill">email: ...</span>
+        <span id="accessPill" class="pill">access: ...</span>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- أقسام المحتوى (مثال) -->
+    <h2>الأقسام</h2>
+    <div class="grid">
+      <div class="box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <b>قسم 1</b> <span class="pill">حلقات</span>
+        </div>
+        <div class="videoPlaceholder" style="margin-top:10px">
+          هنا بتحط فيديوهاتك (iframe / video)
+        </div>
+      </div>
+
+      <div class="box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <b>قسم 2</b> <span class="pill">حلقات</span>
+        </div>
+        <div class="videoPlaceholder" style="margin-top:10px">
+          هنا بتحط فيديوهاتك
+        </div>
+      </div>
+    </div>
+
+    <button id="logout" class="btn ghost" style="margin-top:16px">تسجيل خروج</button>
+  </main>
+
+  <div id="mobileNotice" class="mobileNotice">
+ 🚀  يفضل استخدام من هاتفك ميزة الموقع على جهاز الكمبيوتر من متصفحك لتجربة أفضل
+</div>
+<style>.mobileNotice{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+
+  background:#141416;
+  color:#fff;
+  border:1px solid #2c2c33;
+  border-radius:14px;
+
+  padding:14px 18px;
+  font-size:26px;
+  text-align:center;
+
+  max-width:90%;
+  width:fit-content;
+
+  opacity:0;
+  pointer-events:none;
+  z-index:99999;
+
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+.mobileNotice.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(-6px);
+}
+
+/* جوال + تابلت صغير */
+@media (max-width:750px){
+  .mobileNotice{
+    font-size:13px;
+    padding:12px 14px;
+  }
+}
+
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    const MAX_WIDTH = 750; // جوال + تابلت صغير
+    if (window.innerWidth > MAX_WIDTH) return;
+
+    const notice = document.getElementById("mobileNotice");
+    if (!notice) return;
+
+    // تظهر بعد نصف ثانية
+    setTimeout(() => {
+      notice.classList.add("show");
+    }, 500);
+
+    // تختفي بعد 5 ثواني
+    setTimeout(() => {
+      notice.classList.remove("show");
+    }, 7500);
+
+  });
+</script>
+
+
+  <script type="module">
+    // ============================
+    // Firebase imports
+    // ============================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendEmailVerification,
+      sendPasswordResetEmail,
+      signOut,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      updateDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    // ============================
+    // ضع إعدادات مشروعك هنا
+    // ============================
+const firebaseConfig = {
+  apiKey: "AIzaSyCAadAsrjsLF6Ij5kuqowX91ikWnDYq6uc",
+  authDomain: "veopluse3.firebaseapp.com",
+  projectId: "veopluse3",
+  storageBucket: "veopluse3.firebasestorage.app",
+  messagingSenderId: "135741681622",
+  appId: "1:135741681622:web:169fb0449f6badc3497e77"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ============================
+    // إعدادات الشروط
+    // ============================
+    const REQUIRE_EMAIL_VERIFIED_FOR_MAIN = true;
+    const REQUIRE_ACCESS_CODE_FOR_MAIN = true;
+
+    // ============================
+    // UI
+    // ============================
+    const authView = document.getElementById("authView");
+    const mainView = document.getElementById("mainView");
+    const msg = document.getElementById("msg");
+    const verifyBox = document.getElementById("verifyBox");
+    const needCodeBox = document.getElementById("needCodeBox");
+
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".panel");
+    const codeTabBtn = document.getElementById("codeTabBtn");
+
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPass  = document.getElementById("loginPass");
+    const btnLogin   = document.getElementById("btnLogin");
+
+    const suName  = document.getElementById("suName");
+    const suEmail = document.getElementById("suEmail");
+    const suPass  = document.getElementById("suPass");
+    const btnSignup = document.getElementById("btnSignup");
+
+    const btnForgot = document.getElementById("btnForgot");
+    const btnResend = document.getElementById("btnResend");
+    const goCode = document.getElementById("goCode");
+
+    const accessCode = document.getElementById("accessCode");
+    const btnCheckCode = document.getElementById("btnCheckCode");
+
+    const who = document.getElementById("who");
+    const verifiedPill = document.getElementById("verifiedPill");
+    const accessPill = document.getElementById("accessPill");
+    const logout = document.getElementById("logout");
+
+    btnLogin.dataset.text = btnLogin.textContent;
+    btnSignup.dataset.text = btnSignup.textContent;
+    btnCheckCode.dataset.text = btnCheckCode.textContent;
+
+    function showMsg(text, type="ok") {
+      msg.hidden = false;
+      msg.className = `msg ${type}`;
+      msg.textContent = text;
+    }
+    function hideMsg(){ msg.hidden = true; }
+    function setLoading(btn, loading){
+      btn.disabled = loading;
+      btn.textContent = loading ? "..." : btn.dataset.text;
+    }
+
+    function activateTab(tabName){
+      tabs.forEach(x => x.classList.remove("active"));
+      panels.forEach(p => p.classList.remove("show"));
+      const t = Array.from(tabs).find(b => b.dataset.tab === tabName);
+      if (t) t.classList.add("active");
+      const panel = document.getElementById(tabName);
+      if (panel) panel.classList.add("show");
+    }
+
+    function switchToAuth(tabName="login"){
+      authView.classList.remove("hide");
+      mainView.classList.add("hide");
+      activateTab(tabName);
+    }
+
+    function switchToMain(user, accessGranted){
+      authView.classList.add("hide");
+      mainView.classList.remove("hide");
+      who.textContent = `أنت داخل كـ: ${user.displayName || "بدون اسم"} — ${user.email}`;
+      verifiedPill.textContent = `email: ${user.emailVerified ? "verified" : "not verified"}`;
+      accessPill.textContent = `access: ${accessGranted ? "granted" : "required"}`;
+    }
+
+    function readableAuthError(e){
+      const code = e?.code || "";
+      if (code.includes("auth/email-already-in-use")) return "هذا البريد مستخدم من قبل.";
+      if (code.includes("auth/invalid-email")) return "البريد غير صحيح.";
+      if (code.includes("auth/weak-password")) return "كلمة المرور ضعيفة (على الأقل 6 أحرف).";
+      if (code.includes("auth/invalid-credential")) return "بيانات الدخول غير صحيحة.";
+      if (code.includes("auth/wrong-password")) return "كلمة المرور خطأ.";
+      if (code.includes("auth/user-not-found")) return "الحساب غير موجود.";
+      return e?.message || "صار خطأ غير متوقع.";
+    }
+
+    // Tabs click
+    tabs.forEach(t => {
+      t.addEventListener("click", () => {
+        if (t.disabled) return;
+        hideMsg();
+        verifyBox.hidden = true;
+        needCodeBox.hidden = true;
+        activateTab(t.dataset.tab);
+      });
+    });
+
+    goCode.addEventListener("click", () => {
+      activateTab("code");
+    });
+
+    // ============================
+    // Signup
+    // ============================
+    btnSignup.addEventListener("click", async () => {
+      hideMsg(); verifyBox.hidden = true; needCodeBox.hidden = true;
+
+      const name = suName.value.trim();
+      const email = suEmail.value.trim();
+      const pass = suPass.value;
+
+      if (!name || !email || pass.length < 6) {
+        showMsg("تأكد من الاسم، والإيميل، وكلمة المرور (6 أحرف+).", "bad");
+        return;
+      }
+
+      try {
+        setLoading(btnSignup, true);
+
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+
+        // user doc
+        await setDoc(doc(db, "users", cred.user.uid), {
+          username: name,
+          email: email,
+          createdAt: serverTimestamp(),
+          emailVerified: false,
+          accessGranted: false
+        });
+
+        // verification
+        await sendEmailVerification(cred.user);
+
+        // sign out (يرجع لواجهة التسجيل مثل طلبك)
+        await signOut(auth);
+
+        showMsg("تم إنشاء الحساب ✅ أرسلنا رابط تحقق على بريدك. بعد التحقق ارجع وسجّل دخول.", "ok");
+        suPass.value = "";
+        switchToAuth("signup");
+      } catch (e) {
+        showMsg(readableAuthError(e), "bad");
+      } finally {
+        setLoading(btnSignup, false);
+      }
+    });
+
+    // ============================
+    // Login
+    // ============================
+    btnLogin.addEventListener("click", async () => {
+      hideMsg(); verifyBox.hidden = true; needCodeBox.hidden = true;
+
+      const email = loginEmail.value.trim();
+      const pass = loginPass.value;
+      if (!email || !pass) { showMsg("اكتب البريد وكلمة المرور.", "bad"); return; }
+
+      try {
+        setLoading(btnLogin, true);
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+
+        // إذا تشترط تحقق الإيميل قبل أي تقدم
+        if (REQUIRE_EMAIL_VERIFIED_FOR_MAIN && !cred.user.emailVerified) {
+          verifyBox.hidden = false;
+          showMsg("تم تسجيل الدخول ✅ لكن لازم تحقق الإيميل قبل المتابعة.", "bad");
+          return;
+        }
+
+        // بعد الدخول: نفتح تاب الرمز
+        if (REQUIRE_ACCESS_CODE_FOR_MAIN) {
+          codeTabBtn.disabled = false;
+          needCodeBox.hidden = false;
+          showMsg("دخلت ✅ الآن اكتب رمز الوصول.", "ok");
+          activateTab("code");
+        } else {
+          // لو ما تبغى رمز، يدخل مباشرة
+          switchToMain(cred.user, true);
+        }
+
+      } catch (e) {
+        showMsg(readableAuthError(e), "bad");
+      } finally {
+        setLoading(btnLogin, false);
+      }
+    });
+
+    // Resend verification
+    btnResend.addEventListener("click", async () => {
+      hideMsg();
+      try {
+        if (!auth.currentUser) { showMsg("سجّل دخول أولاً ثم اضغط إعادة الإرسال.", "bad"); return; }
+        await sendEmailVerification(auth.currentUser);
+        showMsg("تم إرسال رابط تحقق جديد ✅", "ok");
+      } catch (e) {
+        showMsg(readableAuthError(e), "bad");
+      }
+    });
+
+    // Forgot password
+    btnForgot.addEventListener("click", async () => {
+      hideMsg();
+      const email = loginEmail.value.trim();
+      if (!email) { showMsg("اكتب بريدك ثم اضغط نسيت كلمة المرور.", "bad"); return; }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMsg("أرسلنا رابط إعادة تعيين كلمة المرور ✅", "ok");
+      } catch (e) {
+        showMsg(readableAuthError(e), "bad");
+      }
+    });
+
+    // ============================
+    // Check Access Code (Firestore)
+    // ============================
+    btnCheckCode.addEventListener("click", async () => {
+      hideMsg();
+
+      if (!auth.currentUser) {
+        showMsg("لازم تسجّل دخول أولاً.", "bad");
+        switchToAuth("login");
+        return;
+      }
+
+      const code = accessCode.value.trim();
+      if (!code || code.length < 10) {
+        showMsg("الرمز غير صحيح ❌", "bad");
+        return;
+      }
+
+      try {
+        setLoading(btnCheckCode, true);
+
+        // access_codes/{code}  <-- docId = code
+        const ref = doc(db, "access_codes", code);
+        const snap = await getDoc(ref);
+
+        if (!snap.exists()) {
+          showMsg("الرمز غير صحيح ❌", "bad");
+          return;
+        }
+
+        const data = snap.data();
+        if (data.used === true) {
+          showMsg("هذا الرمز مستخدم مسبقًا ❌", "bad");
+          return;
+        }
+
+        // علّم الرمز مستخدم + اربطه بالمستخدم
+        await updateDoc(ref, {
+          used: true,
+          usedBy: auth.currentUser.uid,
+          usedAt: serverTimestamp()
+        });
+
+        // علّم المستخدم أنه أخذ صلاحية الدخول
+        await updateDoc(doc(db, "users", auth.currentUser.uid), {
+          accessGranted: true,
+          accessCodeUsed: code,
+          accessGrantedAt: serverTimestamp()
+        });
+//
+        showMsg("تم ✅ الرمز صحيح! جاري فتح الواجهة الأساسية...", "ok");
+
+        // افتح الواجهة
+        switchToMain(auth.currentUser, true);
+
+      } catch (e) {
+        showMsg("صار خطأ أثناء التحقق من الرمز. 8 .", "bad");
+      } finally {
+        setLoading(btnCheckCode, false);
+      }
+    });
+
+    // ============================
+    // Logout
+    // ============================
+    logout.addEventListener("click", async () => {
+      await signOut(auth);
+      hideMsg();
+      verifyBox.hidden = true;
+      needCodeBox.hidden = true;
+      codeTabBtn.disabled = true;
+      accessCode.value = "";
+      switchToAuth("login");
+    });
+
+    // ============================
+    // Guard: يمنع دخول main إلا بالشروط
+    // ============================
+    onAuthStateChanged(auth, async (user) => {
+      hideMsg();
+      verifyBox.hidden = true;
+      needCodeBox.hidden = true;
+
+      if (!user) {
+        codeTabBtn.disabled = true;
+        switchToAuth("login");
+        return;
+      }
+
+      // شرط التحقق
+      if (REQUIRE_EMAIL_VERIFIED_FOR_MAIN && !user.emailVerified) {
+        codeTabBtn.disabled = true;
+        switchToAuth("login");
+        verifyBox.hidden = false;
+        showMsg("أنت مسجل دخول، لكن لازم تحقق الإيميل قبل المتابعة.", "bad");
+        return;
+      }
+
+      // شرط الرمز
+      if (REQUIRE_ACCESS_CODE_FOR_MAIN) {
+        codeTabBtn.disabled = false;
+
+        // اقرأ user doc لمعرفة هل أخذ access
+        try {
+          const userSnap = await getDoc(doc(db, "users", user.uid));
+          const accessGranted = !!userSnap.data()?.accessGranted;
+
+          if (!accessGranted) {
+            switchToAuth("code");
+            needCodeBox.hidden = false;
+            showMsg("أكتب رمز الوصول للمتابعة", "ok");
+            return;
+          }
+
+          // عنده صلاحية
+          switchToMain(user, true);
+          return;
+        } catch (_) {
+          switchToAuth("code");
+          showMsg("تأكد من   users.", "bad");
+          return;
+        }
+      }
+
+      // لو ما فيه رمز
+      switchToMain(user, true);
+    });
+  </script>
+</body>
+</html>
